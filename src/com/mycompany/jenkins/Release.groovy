@@ -210,6 +210,10 @@ class Release implements Serializable {
 
         steps.echo "Deploying Pom"
 
+        for (module in modules) {
+            steps.echo "processing module ${module}"
+            deploy(releaseNumber, repository, profile, "${folder}${module}/")
+        }
     }
 
     def verifyDeploy(folder) {
