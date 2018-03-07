@@ -29,7 +29,8 @@ class Utilities implements Serializable {
      * @param args The arguments to pass to maven
      */
     def mvn(args) {
-        steps.sh "export JAVA_HOME=/usr/local/java-latest  && ${steps.tool 'M3'}/bin/mvn -s /vol/jenkins/config/settings.xml ${args}"
+        //steps.sh "export JAVA_HOME=/usr/local/java-latest  && ${steps.tool 'M3'}/bin/mvn -s /vol/jenkins/config/settings.xml ${args}"
+        steps.bat "${steps.tool 'M3'}/bin/mvn -s ${args}"
     }
 
     /**
@@ -44,7 +45,7 @@ class Utilities implements Serializable {
      * @param gitRepo The reopsitory (minus the .git) to clone from git
      */
     def fromGit(gitRepo) {
-        steps.git url: "https://git.gxsoftware.com/git/${gitRepo}.git", credentialsId: 'git'
+        //steps.git url: "https://git.gxsoftware.com/git/${gitRepo}.git", credentialsId: 'git'
     }
 
     def commitGit(msg) {
@@ -53,21 +54,21 @@ class Utilities implements Serializable {
 
     def tagGit(gitRepo, tag, msg) {
         steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'git', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-            mvn "scm:tag -Dusername=${env.un} -Dpassword=${env.pwd} -Dtag=${tag} -Dmessage='${msg}' -DpushChanges=true -DdeveloperConnectionUrl=scm:git:https://git.gxsoftware.com/git/${gitRepo}.git"
+            //mvn "scm:tag -Dusername=${env.un} -Dpassword=${env.pwd} -Dtag=${tag} -Dmessage='${msg}' -DpushChanges=true -DdeveloperConnectionUrl=scm:git:https://git.gxsoftware.com/git/${gitRepo}.git"
         }
     }
 
     def pushGit(gitRepo, msg) {
         steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'git', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-            mvn "scm:checkin -Dusername=${env.un} -Dpassword=${env.pwd} -Dmessage='${msg}' -DpushChanges=true -DdeveloperConnectionUrl=scm:git:https://git.gxsoftware.com/git/${gitRepo}.git"
+            //mvn "scm:checkin -Dusername=${env.un} -Dpassword=${env.pwd} -Dmessage='${msg}' -DpushChanges=true -DdeveloperConnectionUrl=scm:git:https://git.gxsoftware.com/git/${gitRepo}.git"
         }
     }
 
     def mergeFromTo(gitRepo, branchFrom, branchTo, msg) {
-        steps.git url: "https://git.gxsoftware.com/git/${gitRepo}.git", credentialsId: 'git', branch: branchTo;
-        steps.sh "git merge ${branchFrom}";
-        pushGit(gitRepo, msg);
-        steps.git url: "https://git.gxsoftware.com/git/${gitRepo}.git", credentialsId: 'git', branch: branchFrom;
+        //steps.git url: "https://git.gxsoftware.com/git/${gitRepo}.git", credentialsId: 'git', branch: branchTo;
+        //steps.sh "git merge ${branchFrom}";
+        //pushGit(gitRepo, msg);
+        //steps.git url: "https://git.gxsoftware.com/git/${gitRepo}.git", credentialsId: 'git', branch: branchFrom;
     }
 
     /**
@@ -77,6 +78,6 @@ class Utilities implements Serializable {
      * @param recipients The list of recipients
      */
     def mailTo(subject, body, recipients) {
-        steps.emailext replyTo: "no.reply@gxsoftware.com", body: "${body}", to: "${recipients}", subject: "${subject}"
+        //steps.emailext replyTo: "no.reply@gxsoftware.com", body: "${body}", to: "${recipients}", subject: "${subject}"
     }
 }
