@@ -1,4 +1,4 @@
-package com.mycompany;
+package com.mycompany.jenkins;
 
 import org.apache.maven.model.Model;
 
