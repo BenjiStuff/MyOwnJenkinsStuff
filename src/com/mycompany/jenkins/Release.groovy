@@ -226,7 +226,7 @@ class Release implements Serializable {
 
     def verifyDeploy(folder) {
         def deployLog = steps.readFile "${folder}target/deploy.log"
-        steps.echo '========== deloy.log =========='
+        steps.echo '========== deploy.log =========='
         steps.echo deployLog
         def deployLines = deployLog.readLines()
         for (line in deployLines) {
