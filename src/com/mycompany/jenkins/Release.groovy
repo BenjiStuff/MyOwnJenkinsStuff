@@ -213,6 +213,8 @@ class Release implements Serializable {
 
         steps.echo "Deploying Pom"
 
+        steps.sh "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
+
         for (module in modules) {
             steps.echo "processing module ${module}"
             deploy(releaseNumber, repository, profile, "${folder}${module}/")
