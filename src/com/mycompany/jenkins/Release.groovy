@@ -181,7 +181,7 @@ class Release implements Serializable {
         } */
         steps.echo "Deploying jar"
 
-        
+        steps.sh "curl -v -F r-${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u admin:admin123"
 
     }
 
