@@ -201,6 +201,7 @@ class Release implements Serializable {
             }
         } else {
             //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                steps.echo "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
                 steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
             //}
             verifyDeploy(folder)
