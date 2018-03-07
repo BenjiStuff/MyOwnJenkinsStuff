@@ -30,7 +30,7 @@ class Utilities implements Serializable {
      */
     def mvn(args) {
         //steps.sh "export JAVA_HOME=/usr/local/java-latest  && ${steps.tool 'M3'}/bin/mvn -s /vol/jenkins/config/settings.xml ${args}"
-        steps.bat "${steps.tool 'M3'}\\bin\\mvn -s ${args}"
+        steps.bat "${steps.tool 'M3'}\\bin\\mvn ${args}"
     }
 
     /**
