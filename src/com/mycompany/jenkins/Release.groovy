@@ -168,6 +168,10 @@ class Release implements Serializable {
 
     def deployJar(repository, groupId, artifactId, releaseNumber, packaging, profile, folder) {
         // when deploying a jar, we need to check if there is also a sources jar file in the target folder
+
+        //steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+
+
          //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
             steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         //}
@@ -201,7 +205,7 @@ class Release implements Serializable {
             }
         } else {
             //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-                steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
+                steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/local/artifact/maven/content > target/deploy.log"
             //}
             verifyDeploy(folder)
         }
