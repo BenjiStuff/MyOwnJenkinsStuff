@@ -168,57 +168,53 @@ class Release implements Serializable {
 
     def deployJar(repository, groupId, artifactId, releaseNumber, packaging, profile, folder) {
         // when deploying a jar, we need to check if there is also a sources jar file in the target folder
-/*         steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-            steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
-        }
+         //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+            steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+        //}
         verifyDeploy(folder)
 
         if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-sources.jar")) {
-            steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-                steps.sh "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
-            }
+            //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                steps.bat "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+            //}
             verifyDeploy(folder)
-        } */
+        } 
         steps.echo "Deploying jar"
 
-        steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+        //steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         //steps.sh "curl -v -F r-${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u admin:admin123"
 
     }
 
     def deployPom(repository, groupId, artifactId, releaseNumber, packaging, modules, profile, folder) {
         // when deploying a pom, we need to check if there is also a zip file in the target folder
-/*         if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-jars.zip")) {
-            steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-                steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=zip -F c=jars -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}-jars.zip -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
-            }
+         if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-jars.zip")) {
+            //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=zip -F c=jars -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}-jars.zip -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+            //}
             verifyDeploy(folder)
             if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-sources.zip")) {
-                steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-                    steps.sh "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=zip -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.zip -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
-                }
+                //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                    steps.bat "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=zip -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.zip -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+                //}
                 verifyDeploy(folder)
             }
         } else {
-            steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-                steps.sh "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > target/deploy.log"
-            }
+            //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u ${env.un}:${env.pwd} http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
+            //}
             verifyDeploy(folder)
         }
 
         for (module in modules) {
             steps.echo "processing module ${module}"
             deploy(releaseNumber, repository, profile, "${folder}${module}/")
-        } */
+        }
 
         steps.echo "Deploying Pom"
 
-        steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
+        //steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
 
-        for (module in modules) {
-            steps.echo "processing module ${module}"
-            deploy(releaseNumber, repository, profile, "${folder}${module}/")
-        }
     }
 
     def verifyDeploy(folder) {
@@ -231,7 +227,7 @@ class Release implements Serializable {
                 def html = new XmlSlurper().parseText(deployLog)
                 def errorMsg = html.body.error.text()
                 html = null
-                sendMailToOwner("deploy failed : ${errorMsg}", "See the ${env.BUILD_URL} console")
+                //sendMailToOwner("deploy failed : ${errorMsg}", "See the ${env.BUILD_URL} console")
                 steps.error "deploy failed : ${errorMsg}"
             }
         }
