@@ -1,4 +1,4 @@
-package com.gxsoftware.jenkins;
+package com.mycompany.jenkins;
 
 /**
  * Contains all utility methods. These are simple method which hide some basic technical aspects.
