@@ -181,7 +181,7 @@ class Release implements Serializable {
         } */
         steps.echo "Deploying jar"
 
-        steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123"
+        steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         //steps.sh "curl -v -F r-${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u admin:admin123"
 
     }
