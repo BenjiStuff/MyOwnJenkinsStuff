@@ -168,7 +168,7 @@ class Release implements Serializable {
 
     def deployJar(repository, groupId, artifactId, releaseNumber, packaging, profile, folder) {
         // when deploying a jar, we need to check if there is also a sources jar file in the target folder
-        steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+/*         steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
             steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         }
         verifyDeploy(folder)
@@ -178,12 +178,14 @@ class Release implements Serializable {
                 steps.sh "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
             }
             verifyDeploy(folder)
-        }
+        } */
+        steps.echo "Deploying jar"
+
     }
 
     def deployPom(repository, groupId, artifactId, releaseNumber, packaging, modules, profile, folder) {
         // when deploying a pom, we need to check if there is also a zip file in the target folder
-        if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-jars.zip")) {
+/*         if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-jars.zip")) {
             steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
                 steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=zip -F c=jars -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}-jars.zip -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
             }
@@ -204,7 +206,10 @@ class Release implements Serializable {
         for (module in modules) {
             steps.echo "processing module ${module}"
             deploy(releaseNumber, repository, profile, "${folder}${module}/")
-        }
+        } */
+
+        steps.echo "Deploying Pom"
+
     }
 
     def verifyDeploy(folder) {
