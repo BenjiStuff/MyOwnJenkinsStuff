@@ -168,12 +168,8 @@ class Release implements Serializable {
 
     def deployJar(repository, groupId, artifactId, releaseNumber, packaging, profile, folder) {
         // when deploying a jar, we need to check if there is also a sources jar file in the target folder
-
-        //steps.sh "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u ${env.un}:${env.pwd} http://nexus.product.gx.local/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
-
-
          //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
-             steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
+            steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
             steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         //}
         verifyDeploy(folder)
@@ -186,10 +182,6 @@ class Release implements Serializable {
             verifyDeploy(folder)
         } 
         steps.echo "Deploying jar"
-
-        //steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
-        //steps.sh "curl -v -F r-${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u admin:admin123"
-
     }
 
     def deployPom(repository, groupId, artifactId, releaseNumber, packaging, modules, profile, folder) {
@@ -218,13 +210,10 @@ class Release implements Serializable {
 
         for (module in modules) {
             steps.echo "processing module ${module}"
-            deploy(releaseNumber, repository, profile, "${folder}${module}/")
+            deploy(releaseNumber, repository, profile, "${folder}${module}\\")
         }
 
         steps.echo "Deploying Pom"
-
-        //steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > target/deploy.log"
-
     }
 
     def verifyDeploy(folder) {
