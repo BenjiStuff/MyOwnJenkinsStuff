@@ -137,10 +137,12 @@ class Release implements Serializable {
         switch(packaging) {
             case 'bundle':
             case 'jar' :
-                deployJar(repository, groupId, artifactId, releaseNumber, packaging, profile, folder)
+                //deployJar(repository, groupId, artifactId, releaseNumber, packaging, profile, folder)
+                steps.echo "Deploying bundle or jar"
                 break
             case 'pom' :
-                deployPom(repository, groupId, artifactId, releaseNumber, packaging, modules, profile, folder)
+                //deployPom(repository, groupId, artifactId, releaseNumber, packaging, modules, profile, folder)
+                steps.echo "Deploying pom"
                 break
             default :
                 break
