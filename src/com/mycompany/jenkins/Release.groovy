@@ -170,7 +170,7 @@ class Release implements Serializable {
         // when deploying a jar, we need to check if there is also a sources jar file in the target folder
          //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
             steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
-            steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
+            steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target\\${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         //}
         verifyDeploy(folder)
 
