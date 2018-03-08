@@ -133,6 +133,18 @@ class Release implements Serializable {
         }
         steps.echo "packaging ${groupId}:${artifactId}:${releaseNumber}:${packaging}"
 
+        def value = 'a'
+
+        switch(value) {
+            case 'a':
+            case 'b':
+                steps.echo "This is b"
+                break;
+            case 'c':
+                steps.echo "This is c"
+                break;
+        }
+
         // deploy based on package type
         switch(packaging) {
             case 'bundle':
