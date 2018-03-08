@@ -173,12 +173,14 @@ class Release implements Serializable {
 
 
          //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+             steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
             steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=jar -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
         //}
         verifyDeploy(folder)
 
         if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-sources.jar")) {
             //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
                 steps.bat "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=jar -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.jar -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
             //}
             verifyDeploy(folder)
@@ -194,11 +196,13 @@ class Release implements Serializable {
         // when deploying a pom, we need to check if there is also a zip file in the target folder
          if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-jars.zip")) {
             //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
                 steps.bat "curl -v -F r=${repository} -F hasPom=true -F e=zip -F c=jars -F file=@${folder}pom.xml -F file=@${folder}target/${artifactId}-${releaseNumber}-jars.zip -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
             //}
             verifyDeploy(folder)
             if (steps.fileExists("${folder}target/${artifactId}-${releaseNumber}-sources.zip")) {
                 //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
+                    steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
                     steps.bat "curl -v -F r=${repository} -F g=${groupId} -F a=${artifactId} -F v=${releaseNumber} -F p=${packaging} -F c=sources -F e=zip -F file=@${folder}target/${artifactId}-${releaseNumber}-sources.zip -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
                 //}
                 verifyDeploy(folder)
@@ -206,7 +210,7 @@ class Release implements Serializable {
         } else {
             //steps.withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexus', passwordVariable: 'pwd', usernameVariable: 'un']]) {
             //if (steps.fileExists("${folder}target/NUL"))
-                steps.bat "if not exist ${folder}target mkdir target" //
+                steps.bat "if not exist ${folder}target mkdir ${folder}target" //Add this line to make it windows compatible
                 steps.bat "curl -v -F r=${repository} -F hasPom=true -F file=@${folder}pom.xml -u admin:admin123 http://localhost:8081/nexus/service/local/artifact/maven/content > ${folder}target/deploy.log"
             //}
             verifyDeploy(folder)
