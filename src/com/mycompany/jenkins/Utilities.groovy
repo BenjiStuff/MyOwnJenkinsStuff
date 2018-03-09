@@ -49,7 +49,7 @@ class Utilities implements Serializable {
     }
 
     def commitGit(msg) {
-        mvn "scm:checkin -Dmessage='${msg}' -DpushChanges=false"
+        //mvn "scm:checkin -Dmessage='${msg}' -DpushChanges=false"
     }
 
     def tagGit(gitRepo, tag, msg) {
